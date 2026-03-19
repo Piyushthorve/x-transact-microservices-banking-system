@@ -21,6 +21,68 @@ A scalable banking system built using microservices architecture with Spring Boo
 - Kafka → async communication
 - Redis → rate limiting
 
+## 🏗️ Architecture Diagram
+
+```mermaid
+flowchart LR
+
+%% Client Layer
+A[Client / Frontend App]
+
+%% Gateway
+B[API Gateway]
+
+%% Service Discovery
+C[Eureka Server]
+
+%% Config Server
+D[Config Server]
+
+%% Microservices
+E[Accounts Service]
+F[Cards Service]
+G[Loans Service]
+H[Message Service]
+
+%% Database Layer
+DB1[(Accounts DB)]
+DB2[(Cards DB)]
+DB3[(Loans DB)]
+
+%% Connections
+
+A --> B
+
+B --> E
+B --> F
+B --> G
+
+E --> DB1
+F --> DB2
+G --> DB3
+
+E --> H
+F --> H
+G --> H
+
+%% Infra connections
+E --> C
+F --> C
+G --> C
+B --> C
+
+E --> D
+F --> D
+G --> D
+B --> D
+
+%% Styling
+classDef service fill:#e3f2fd,stroke:#1e88e5,stroke-width:1px;
+classDef infra fill:#fff3e0,stroke:#fb8c00,stroke-width:1px;
+
+class E,F,G,H service;
+class B,C,D infra;
+
 ## 🛠️ Tech Stack
 - Backend: Spring Boot, Spring Cloud
 - Security: Keycloak, JWT
