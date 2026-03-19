@@ -41,52 +41,76 @@ A scalable banking system built using microservices architecture with Spring Boo
 - Implement distributed tracing (Zipkin)
 - Add monitoring dashboard
 
+
 ## 🏗️ Architecture Diagram
 
 ```mermaid
-flowchart LR
+flowchart TB
 
+%% ===== CLIENT LAYER =====
 A[Client / Frontend App]
+
+%% ===== GATEWAY =====
 B[API Gateway]
-C[Eureka Server]
-D[Config Server]
 
-E[Accounts Service]
-F[Cards Service]
-G[Loans Service]
-H[Message Service]
+%% ===== MICROSERVICES =====
+subgraph Services
+    C[Accounts Service]
+    D[Cards Service]
+    E[Loans Service]
+end
 
-DB1[(Accounts DB)]
-DB2[(Cards DB)]
-DB3[(Loans DB)]
+%% ===== INFRA =====
+subgraph Infrastructure
+    F[Eureka Server]
+    G[Config Server]
+    H[Message Service]
+end
 
+%% ===== DATABASES =====
+subgraph Databases
+    DB1[(Accounts DB)]
+    DB2[(Cards DB)]
+    DB3[(Loans DB)]
+end
+
+%% ===== FLOW =====
 A --> B
 
+B --> C
+B --> D
 B --> E
+
+%% Service to DB
+C --> DB1
+D --> DB2
+E --> DB3
+
+%% Service to Messaging
+C --> H
+D --> H
+E --> H
+
+%% Service Discovery
+C --> F
+D --> F
+E --> F
 B --> F
+
+%% Config Server
+C --> G
+D --> G
+E --> G
 B --> G
 
-E --> DB1
-F --> DB2
-G --> DB3
-
-E --> H
-F --> H
-G --> H
-
-E --> C
-F --> C
-G --> C
-B --> C
-
-E --> D
-F --> D
-G --> D
-B --> D
-
+%% ===== STYLING =====
+classDef gateway fill:#fff3e0,stroke:#fb8c00,stroke-width:1px;
 classDef service fill:#e3f2fd,stroke:#1e88e5,stroke-width:1px;
-classDef infra fill:#fff3e0,stroke:#fb8c00,stroke-width:1px;
+classDef infra fill:#ede7f6,stroke:#5e35b1,stroke-width:1px;
+classDef db fill:#f1f8e9,stroke:#7cb342,stroke-width:1px;
 
-class E,F,G,H service;
-class B,C,D infra;
+class B gateway;
+class C,D,E service;
+class F,G,H infra;
+class DB1,DB2,DB3 db;
 
