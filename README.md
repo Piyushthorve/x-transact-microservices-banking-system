@@ -44,5 +44,5 @@ A scalable banking system built using microservices architecture with Spring Boo
 
 ## 🏗️ Architecture Diagram
 <p align="center">
-  <img src="docs/architecture.png" alt="Architecture Diagram" width="700"/>
+  <img src="X-Transact-master/docs/architecture.png" alt="Architecture Diagram" width="700"/>
 </p>
